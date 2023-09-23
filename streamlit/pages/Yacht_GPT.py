@@ -44,7 +44,7 @@ hide_streamlit_style = """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 load_dotenv()
-timeout = 10
+timeout = 30
 url = getenv("url_backend")
 
 
