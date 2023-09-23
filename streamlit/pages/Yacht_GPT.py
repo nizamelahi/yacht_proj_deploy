@@ -56,7 +56,7 @@ def request_data():
     st.session_state.result = []
     st.session_state.links = []
     if st.session_state.query:
-        payload = {"query": st.session_state.query,}
+        payload = {"query": st.session_state.query,"model":st.session_state.model}
         async_request(
             "get",
             url + "/ask",
@@ -83,7 +83,9 @@ st.markdown(
 )
 
 init_state_var("result", [])
+init_state_var("model", False)
 
+model_btn=st.sidebar.toggle("fine tuned model",key="model")
 
 prompt_input = st.text_input(
     placeholder="Ask me anything!",

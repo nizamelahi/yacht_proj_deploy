@@ -16,12 +16,18 @@ print("Ready")
 
 @app.route("/ask", methods=["GET"])
 def searchpage():
+    print("request recieved")
     time1=datetime.now()
-    completion = openai.ChatCompletion.create(
-        # model="ftjob-7AAdc2Ij1jXelbewV0XT9ypu",
-        model="gpt-3.5-turbo",
-        messages=[{"role": "system", "content": "you are a helpful guide to boat related queries."}, {"role": "user", "content": f"tell me something about {request.json.get('query')}"}]
+    print(request.json.get('model'))
+    if not request.json.get('model'):
+        model="gpt-3.5-turbo"
+    else:
+        model="ft:gpt-3.5-turbo-0613:personal::81lwdC3E"
 
+    completion = openai.ChatCompletion.create(
+        model=model,
+        messages=[{"role": "system", "content": "you are a helpful guide to boat related queries."}, {"role": "user", "content": f"tell me something about {request.json.get('query')}"}],
+        temperature=0.2
     )
     print(f"time taken: {datetime.now()-time1}")
     return {"result":completion.choices[0].message["content"]}
