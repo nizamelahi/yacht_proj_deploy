@@ -26,7 +26,7 @@ def searchpage():
 
     completion = openai.ChatCompletion.create(
         model=model,
-        messages=[{"role": "system", "content": "you are a helpful guide to boat related queries."}, {"role": "user", "content": f"tell me something about {request.json.get('query')}"}],
+        messages=[{"role": "system", "content": "you are a helpful guide to boat related queries."}, {"role": "user", "content": f"{request.json.get('query')}"}],
         temperature=0.2
     )
     print(f"time taken: {datetime.now()-time1}")
