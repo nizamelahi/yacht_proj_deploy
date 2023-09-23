@@ -63,9 +63,10 @@ def request_data():
             json=payload,
             callback=lambda r: show_result(r.json()),
         )
-        for seconds in range(timeout):
-            with spinner.container():
-                with st.spinner(text="please wait"):
+        
+        with spinner.container():
+            with st.spinner(text="please wait"):
+                for seconds in range(timeout):
                     time.sleep(1)
                     if len(st.session_state.result) > 0:
                         st.empty()
