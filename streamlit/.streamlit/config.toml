@@ -3,3 +3,5 @@ base="dark"
 primaryColor="#1b9acb"
 backgroundColor="#000000"
 secondaryBackgroundColor="#21212b"
+[server]
+port = 7366
