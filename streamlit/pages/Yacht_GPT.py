@@ -44,7 +44,7 @@ hide_streamlit_style = """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 load_dotenv()
-timeout = 30
+timeout = 60
 url = getenv("url_backend")
 
 
@@ -83,15 +83,22 @@ st.markdown(
 )
 
 init_state_var("result", [])
-init_state_var("model", False)
+init_state_var("model", "GPT3.5(untuned)")
 
-model_btn=st.sidebar.toggle("fine tuned model",key="model")
+ 
+model_select=st.sidebar.selectbox(
+   "Model",
+   ("GPT3.5(untuned)", "finetuned(short)", "finetuned(long)"),
+   index=0,
+   key="model"
+)
 
 prompt_input = st.text_input(
     placeholder="Ask me anything!",
     label="search request",
     key="query",
     label_visibility="hidden",
+    help="long takes longer to generate"
 )
 
 generate = st.button("Ask", type="primary")
