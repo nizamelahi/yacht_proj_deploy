@@ -57,9 +57,13 @@ def request_data():
     st.session_state.links = []
     if st.session_state.query:
         payload = {"query": st.session_state.query,"model":st.session_state.model}
+        if technique == "finetuning":
+            tq="/ask"
+        else:
+            tq="/askRAG"
         async_request(
             "get",
-            url + "/ask",
+            url + tq,
             json=payload,
             callback=lambda r: show_result(r.json()),
         )
@@ -84,14 +88,27 @@ st.markdown(
 
 init_state_var("result", [])
 init_state_var("model", "GPT3.5(untuned)")
+init_state_var("technique","finetuning" )
 
- 
+technique=st.sidebar.selectbox(
+   "technique",
+   ("finetuning", "RAG"),
+   index=0,
+   key="technique",
+)
+if technique == "finetuning":
+    model_disable=False
+else:
+    model_disable=True
+
 model_select=st.sidebar.selectbox(
    "Model",
    ("GPT3.5(untuned)", "finetuned(short)", "finetuned(long)"),
    index=0,
-   key="model"
+   key="model",
+   disabled=model_disable
 )
+
 
 prompt_input = st.text_input(
     placeholder="Ask me anything!",
