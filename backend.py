@@ -32,9 +32,6 @@ print("Ready")
 
 def augment_prompt(query: str):
     results=search(df,request.json.get('query'),model)
-    print("___________________________")
-    print(results)
-    print("___________________________")
     source_knowledge = "\n".join(results)
     augmented_prompt = f"""Using the contexts below, answer the query.
 
