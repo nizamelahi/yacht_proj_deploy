@@ -22,7 +22,7 @@ def search(df, query, model, n=3):
     )
 
     results = df[df.similarity >= threshold]
-    print(len(results))
+    print(f"{len(results)} relevant results")
     results = (
         results.sort_values("similarity", ascending=False)
         .head(n)
