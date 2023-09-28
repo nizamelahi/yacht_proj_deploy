@@ -4,4 +4,4 @@
 3. for backend run ```python3 backend.py```
 4. for frontend :
 *   ```cd streamlit```
-*   ```Streamlit run Home.py```
+*   ```Streamlit run Home.py``` 
