@@ -8,7 +8,7 @@ apikey = getenv("PALM_API_KEY")
 palm.configure(api_key=apikey)
 
 
-def req_BARD(query):
+def req_PALM(query):
     models = [
         m
         for m in palm.list_models()

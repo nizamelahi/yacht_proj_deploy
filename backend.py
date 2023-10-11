@@ -4,7 +4,7 @@ from flask import Flask, request
 from datetime import datetime
 from vector_search.vector_search import initialise
 from openAI import req_GPT_finetune,req_RAG
-from BARD import req_BARD
+from PALM import req_PALM
 
 load_dotenv()
 app = Flask(__name__)
@@ -18,9 +18,8 @@ print("Ready")
 @app.route("/ask", methods=["GET"])
 def search_page():
     print("____________________")
-    print("finetune request recieved")
+    print("GPT request recieved")
     time1=datetime.now()
-    print(request.json.get('model'))
     result=req_GPT_finetune(request.json.get('model_name'),request.json.get('query'))
     print(f"time taken: {datetime.now()-time1}")
     return {"result":result}
@@ -34,12 +33,12 @@ def search_with_RAG():
     print(f"time taken: {datetime.now()-time1}")
     return {"result":result}
 
-@app.route("/askBARD", methods=["GET"])
-def search_with_BARD():
+@app.route("/askPALM", methods=["GET"])
+def search_with_PALM():
     print("____________________")
-    print("BARD request recieved")
+    print("PALM request recieved")
     time1=datetime.now()
-    result=req_BARD(request.json.get('query'))
+    result=req_PALM(request.json.get('query'))
     print(f"time taken: {datetime.now()-time1}")
     return {"result":result}
 

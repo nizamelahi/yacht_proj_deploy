@@ -23,10 +23,9 @@ def augment_prompt(query: str,df, model):
 
 
 def req_GPT_finetune(model_name, query):
-    if model_name == "GPT3.5(untuned)":
-        model = "gpt-3.5-turbo"
-        print("gpt")
-    elif model_name == "finetuned(short)":
+    if model_name == "GPT4(untuned)":
+        model = "gpt-4"
+    elif model_name == "finetuned-gpt3.5(short)":
         model = "ft:gpt-3.5-turbo-0613:personal::81lwdC3E"  # split paragraph model
     else:
         model = "ft:gpt-3.5-turbo-0613:personal::825r15TO"  # combined paragraph model

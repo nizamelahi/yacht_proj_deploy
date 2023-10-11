@@ -68,12 +68,12 @@ def request_data():
             "query": st.session_state.query,
             "model_name": st.session_state.model,
         }
-        if technique == "GPT-3.5 finetuning":
+        if technique == "ChatGPT":
             tq = "/ask"
-        elif technique == "RAG":
+        elif technique == "ChatGPT+RAG":
             tq = "/askRAG"
         else:
-            tq = "/askBARD"
+            tq = "/askPALM"
         async_request(
             "get",
             url + tq,
@@ -103,24 +103,24 @@ st.markdown(
 )
 
 init_state_var("result", [])
-init_state_var("model", "GPT3.5(untuned)")
-init_state_var("technique", "RAG",)
+init_state_var("model", "GPT4(untuned)")
+init_state_var("technique", "ChatGPT+RAG",)
 init_state_var("error", False,)
 
 technique = st.sidebar.selectbox(
     "technique",
-    ("RAG", " BARD", "GPT-3.5 finetuning"),
+    ("ChatGPT+RAG", "PALM", "ChatGPT"),
     index=0,
     key="technique",
 )
-if technique == "GPT-3.5 finetuning":
+if technique == "ChatGPT":
     model_disable = False
 else:
     model_disable = True
 
 model_select = st.sidebar.selectbox(
     "Model",
-    ("GPT3.5(untuned)", "finetuned(short)", "finetuned(long)"),
+    ("GPT4(untuned)", "finetuned-gpt3.5(short)", "finetuned-gpt3.5(long)"),
     index=0,
     key="model",
     disabled=model_disable,
