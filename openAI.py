@@ -7,7 +7,7 @@ from vector_search.vector_search import search
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
-chat = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model="gpt-3.5-turbo")
+chat = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model="gpt-4")
 
 
 def augment_prompt(query: str,df, model):
