@@ -147,7 +147,7 @@ if generate:
 with content.container():
     if len(st.session_state.get("result")) > 0:
         st.markdown(
-            f'<div style="font-size:20px;vertical-align:top;">{st.session_state.result}</div>',
+            f'<div style="font-size:20px;vertical-align:top;">{st.session_state.result} </div>',
             unsafe_allow_html=True,
         )
         st.text(" ")

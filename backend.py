@@ -7,7 +7,6 @@ from openAI import req_GPT_finetune,req_RAG
 from BARD import req_BARD
 
 load_dotenv()
-# creating a Flask app
 app = Flask(__name__)
 datafile = getenv("processed_data")
 

@@ -1,14 +1,13 @@
 from langchain.schema import SystemMessage, HumanMessage, AIMessage
 from langchain.chat_models import ChatOpenAI
 import openai
-from os import getenv
+import os
 from dotenv import load_dotenv
 from vector_search.vector_search import search
 
 load_dotenv()
-openai.api_key = getenv("OPENAI_API_KEY")
-
-chat = ChatOpenAI(openai_api_key=getenv("OPENAI_API_KEY"), model="gpt-3.5-turbo")
+openai.api_key = os.getenv("OPENAI_API_KEY")
+chat = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model="gpt-3.5-turbo")
 
 
 def augment_prompt(query: str,df, model):
@@ -51,9 +50,7 @@ def req_GPT_finetune(model_name, query):
 
 def req_RAG(query,df, model):
     messages = [
-        SystemMessage(content="you are a helpful guide to boat related queries"),
-        HumanMessage(content="Hi AI, how are you today?"),
-        AIMessage(content="I'm great thank you. How can I help you?"),
+        SystemMessage(content="you are a helpful guide to boat related queries")
     ]
     prompt = HumanMessage(content=augment_prompt(query,df, model))
     messages.append(prompt)
