@@ -7,18 +7,27 @@ from vector_search.vector_search import search
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
-chat = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model="gpt-4")
+chat = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model="gpt-4",temperature=0.2)
 
 
-def augment_prompt(query: str,df, model):
+def augment_prompt(query: str,df, model,combined):
     results = search(df, query, model)
     source_knowledge = "\n".join(results)
-    augmented_prompt = f"""Using the contexts below, answer the query.
+    if combined:
+        augmented_prompt = f"""Using the contexts below, answer the query as concisely as possible.
+        if information in the contexts is insufficient,use your knowledge of boats to answer the query.
+        
+        Contexts:
+        {source_knowledge}
 
-    Contexts:
-    {source_knowledge}
+        Query: {query}"""
+    else:
+        augmented_prompt = f"""Using the contexts below, answer the query.
 
-    Query: {query}"""
+        Contexts:
+        {source_knowledge}
+
+        Query: {query}"""
     return augmented_prompt
 
 
@@ -47,11 +56,11 @@ def req_GPT_finetune(model_name, query):
     return completion.choices[0].message["content"]
 
 
-def req_RAG(query,df, model):
+def req_RAG(query,df, model,combined):
     messages = [
         SystemMessage(content="you are a helpful guide to boat related queries")
     ]
-    prompt = HumanMessage(content=augment_prompt(query,df, model))
+    prompt = HumanMessage(content=augment_prompt(query,df, model,combined))
     messages.append(prompt)
     res = chat(messages)
     

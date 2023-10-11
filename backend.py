@@ -29,7 +29,7 @@ def search_with_RAG():
     print("____________________")
     print("RAG request recieved")
     time1=datetime.now()
-    result=req_RAG(request.json.get('query'),df,model)
+    result=req_RAG(request.json.get('query'),df,model,request.json.get("combined"))
     print(f"time taken: {datetime.now()-time1}")
     return {"result":result}
 

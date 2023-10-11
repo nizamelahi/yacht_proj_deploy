@@ -50,15 +50,16 @@ url = getenv("url_backend")
 
 def show_result(r):
     try:
-        rs=r.json()
+        rs = r.json()
         if rs.get("result"):
             st.session_state.result = rs.get("result")
         else:
             st.error("something went wrong :(")
-            st.session_state.error=True
+            st.session_state.error = True
     except:
         st.error("something went wrong :(")
-        st.session_state.error=True
+        st.session_state.error = True
+
 
 def request_data():
     st.session_state.result = []
@@ -70,8 +71,12 @@ def request_data():
         }
         if technique == "ChatGPT":
             tq = "/ask"
-        elif technique == "ChatGPT+RAG":
+        elif technique in ["RAG", "RAG+ChatGPT"]:
             tq = "/askRAG"
+            if technique == "RAG+ChatGPT":
+                payload["combined"] = True
+            else:
+                payload["combined"] = False
         else:
             tq = "/askPALM"
         async_request(
@@ -89,7 +94,7 @@ def request_data():
                         st.empty()
                         break
                     elif st.session_state.error:
-                        st.session_state.error=False
+                        st.session_state.error = False
                         break
                 if seconds == timeout - 1:
                     st.error("something went wrong :(")
@@ -104,12 +109,18 @@ st.markdown(
 
 init_state_var("result", [])
 init_state_var("model", "GPT4(untuned)")
-init_state_var("technique", "ChatGPT+RAG",)
-init_state_var("error", False,)
+init_state_var(
+    "technique",
+    "RAG",
+)
+init_state_var(
+    "error",
+    False,
+)
 
 technique = st.sidebar.selectbox(
     "technique",
-    ("ChatGPT+RAG", "PALM", "ChatGPT"),
+    ("RAG", "RAG+ChatGPT", "PALM", "ChatGPT"),
     index=0,
     key="technique",
 )
