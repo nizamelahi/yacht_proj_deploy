@@ -7,13 +7,15 @@ from vector_search.vector_search import search
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
-chat = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model="gpt-4",temperature=0.2)
+chat = ChatOpenAI(
+    openai_api_key=os.getenv("OPENAI_API_KEY"), model="gpt-4", temperature=0.2
+)
 
 
-def augment_prompt(query: str,df, model,combined):
+def augment_prompt(query: str, df, model, combined):
     results = search(df, query, model)
     source_knowledge = "\n".join(results)
-    # print(source_knowledge)
+    print(source_knowledge)
     if combined:
         augmented_prompt = f"""Using the contexts below, answer the query as concisely as possible.
         if information in the contexts is insufficient,use your knowledge of boats to answer the query.
@@ -32,13 +34,18 @@ def augment_prompt(query: str,df, model,combined):
     return augmented_prompt
 
 
-def req_GPT_finetune(model_name, query):
+def req_GPT_finetune(model_name, query, concise):
     if model_name == "GPT4(untuned)":
         model = "gpt-4"
     elif model_name == "finetuned-gpt3.5(short)":
         model = "ft:gpt-3.5-turbo-0613:personal::81lwdC3E"  # split paragraph model
     else:
         model = "ft:gpt-3.5-turbo-0613:personal::825r15TO"  # combined paragraph model
+
+    if concise:
+        modifier = "give a short, concise answer to"
+    else:
+        modifier = "answer"
 
     completion = openai.ChatCompletion.create(
         model=model,
@@ -49,7 +56,7 @@ def req_GPT_finetune(model_name, query):
             },
             {
                 "role": "user",
-                "content": f"please give a short, concise answer to the following query: {query}",
+                "content": f"please {modifier} the following query: {query}",
             },
         ],
         temperature=0.2,
@@ -57,12 +64,12 @@ def req_GPT_finetune(model_name, query):
     return completion.choices[0].message["content"]
 
 
-def req_RAG(query,df, model,combined):
+def req_RAG(query, df, model, combined):
     messages = [
         SystemMessage(content="you are a helpful guide to boat related queries")
     ]
-    prompt = HumanMessage(content=augment_prompt(query,df, model,combined))
+    prompt = HumanMessage(content=augment_prompt(query, df, model, combined))
     messages.append(prompt)
     res = chat(messages)
-    
+
     return res.content

@@ -69,8 +69,12 @@ def request_data():
             "query": st.session_state.query,
             "model_name": st.session_state.model,
         }
-        if technique == "ChatGPT":
-            tq = "/ask"
+        if technique in ["ChatGPT", "ChatGPT-Vanilla"]:
+            tq = "/askGPT"
+            if technique == "ChatGPT-Vanilla":
+                payload["concise"] = False
+            else:
+                payload["concise"] = True
         elif technique in ["RAG", "RAG+ChatGPT"]:
             tq = "/askRAG"
             if technique == "RAG+ChatGPT":
@@ -120,7 +124,7 @@ init_state_var(
 
 technique = st.sidebar.selectbox(
     "technique",
-    ("RAG", "RAG+ChatGPT", "PALM", "ChatGPT"),
+    ("RAG", "RAG+ChatGPT", "PALM", "ChatGPT", "ChatGPT-Vanilla"),
     index=0,
     key="technique",
 )

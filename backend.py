@@ -15,12 +15,12 @@ df, model = initialise(datafile)
 print("Ready")
 
 
-@app.route("/ask", methods=["GET"])
+@app.route("/askGPT", methods=["GET"])
 def search_page():
     print("____________________")
     print("GPT request recieved")
     time1=datetime.now()
-    result=req_GPT_finetune(request.json.get('model_name'),request.json.get('query'))
+    result=req_GPT_finetune(request.json.get('model_name'),request.json.get('query'),request.json.get('concise'))
     print(f"time taken: {datetime.now()-time1}")
     return {"result":result}
 
