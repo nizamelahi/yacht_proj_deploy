@@ -13,6 +13,7 @@ chat = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model="gpt-4",temp
 def augment_prompt(query: str,df, model,combined):
     results = search(df, query, model)
     source_knowledge = "\n".join(results)
+    # print(source_knowledge)
     if combined:
         augmented_prompt = f"""Using the contexts below, answer the query as concisely as possible.
         if information in the contexts is insufficient,use your knowledge of boats to answer the query.

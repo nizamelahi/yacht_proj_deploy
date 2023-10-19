@@ -12,7 +12,7 @@ def initialise(filename):
     return (df, SentenceTransformer("thenlper/gte-large"))
 
 
-def search(df, query, model, n=3):
+def search(df, query, model, n=1):
     product_embedding = model.encode(
         query,
         normalize_embeddings=True,
