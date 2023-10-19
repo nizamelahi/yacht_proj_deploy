@@ -43,9 +43,9 @@ def req_GPT_finetune(model_name, query, concise):
         model = "ft:gpt-3.5-turbo-0613:personal::825r15TO"  # combined paragraph model
 
     if concise:
-        modifier = "give a short, concise answer to"
+        modifier = "please give a short, concise answer to the following query:"
     else:
-        modifier = "answer"
+        modifier = ""
 
     completion = openai.ChatCompletion.create(
         model=model,
@@ -56,10 +56,10 @@ def req_GPT_finetune(model_name, query, concise):
             },
             {
                 "role": "user",
-                "content": f"please {modifier} the following query: {query}",
+                "content": f"{modifier} {query}",
             },
         ],
-        temperature=0.2,
+        temperature=0.7,
     )
     return completion.choices[0].message["content"]
 
