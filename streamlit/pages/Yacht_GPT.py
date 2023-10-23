@@ -124,7 +124,7 @@ init_state_var(
 
 technique = st.sidebar.selectbox(
     "technique",
-    ("RAG", "RAG+ChatGPT", "PALM", "ChatGPT", "ChatGPT-Vanilla"),
+    ("RAG", "RAG+ChatGPT", "PALM", "ChatGPT"),
     index=0,
     key="technique",
 )
@@ -161,7 +161,7 @@ if generate:
 
 with content.container():
     if len(st.session_state.get("result")) > 0:
-        for chunk in st.session_state.result.split('\n'):
+        for chunk in st.session_state.result.split("\n"):
             st.markdown(
                 f'<div style="font-size:20px;">{chunk}</div>',
                 unsafe_allow_html=True,
